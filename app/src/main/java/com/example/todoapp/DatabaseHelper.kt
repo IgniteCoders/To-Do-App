@@ -93,5 +93,6 @@ class DatabaseHelper(context: Context)
         //db.execSQL("DELETE FROM Task WHERE id = 1")
 
         val deletedRows = db.delete("Task", "id = 1", null)
+        Log.i("DATABASE", "Deleted rows: $deletedRows")
     }
 }
