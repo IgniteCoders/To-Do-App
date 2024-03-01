@@ -79,12 +79,19 @@ class DatabaseHelper(context: Context)
 
     fun updateTask() {
         val db = writableDatabase
-        //db.execSQL("INSERT INTO Task (task, done) VALUES ('Comprar leche', false)")
+        //db.execSQL("UPDATE Task SET task = 'Comprar leche', done = true WHERE id = 1")
 
         var values = ContentValues()
         values.put("done", true)
 
         var updatedRows = db.update("Task", values, "id = ? OR id = ?", arrayOf("1", "3"))
         Log.i("DATABASE", "Updated records: $updatedRows")
+    }
+
+    fun deleteTask () {
+        val db = writableDatabase
+        //db.execSQL("DELETE FROM Task WHERE id = 1")
+
+        val deletedRows = db.delete("Task", "id = 1", null)
     }
 }
