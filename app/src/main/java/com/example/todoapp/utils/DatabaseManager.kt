@@ -12,7 +12,7 @@ class DatabaseManager(context: Context) : SQLiteOpenHelper(context, DATABASE_NAM
 
     companion object {
         const val DATABASE_NAME = "to_do_app.db"
-        const val DATABASE_VERSION = 2
+        const val DATABASE_VERSION = 1
         const val COLUMN_NAME_ID = "id"
 
         private const val SQL_CREATE_TABLE =
