@@ -14,11 +14,11 @@ class TaskDAO (context: Context) {
     fun insert(task: Task): Task {
         val db = databaseManager.writableDatabase
 
-        var values = ContentValues()
+        val values = ContentValues()
         values.put(Task.COLUMN_NAME_TASK, task.task)
         values.put(Task.COLUMN_NAME_DONE, task.done)
 
-        var newRowId = db.insert(Task.TABLE_NAME, null, values)
+        val newRowId = db.insert(Task.TABLE_NAME, null, values)
         Log.i("DATABASE", "New record id: $newRowId")
 
         db.close()
@@ -31,11 +31,11 @@ class TaskDAO (context: Context) {
     fun update(task: Task) {
         val db = databaseManager.writableDatabase
 
-        var values = ContentValues()
+        val values = ContentValues()
         values.put(Task.COLUMN_NAME_TASK, task.task)
         values.put(Task.COLUMN_NAME_DONE, task.done)
 
-        var updatedRows = db.update(Task.TABLE_NAME, values, "${DatabaseManager.COLUMN_NAME_ID} = ${task.id}", null)
+        val updatedRows = db.update(Task.TABLE_NAME, values, "${DatabaseManager.COLUMN_NAME_ID} = ${task.id}", null)
         Log.i("DATABASE", "Updated records: $updatedRows")
 
         db.close()
@@ -95,7 +95,7 @@ class TaskDAO (context: Context) {
             null               // The sort order
         )
 
-        var list: MutableList<Task> = mutableListOf()
+        val list: MutableList<Task> = mutableListOf()
 
         while (cursor.moveToNext()) {
             val id = cursor.getInt(cursor.getColumnIndex(DatabaseManager.COLUMN_NAME_ID))
@@ -103,7 +103,7 @@ class TaskDAO (context: Context) {
             val done = cursor.getInt(cursor.getColumnIndex(Task.COLUMN_NAME_DONE)) == 1
             //Log.i("DATABASE", "$id -> Task: $taskName, Done: $done")
 
-            val task: Task = Task(id, taskName, done)
+            val task = Task(id, taskName, done)
             list.add(task)
         }
 
