@@ -1,3 +1,18 @@
 <resources>
-    <string name="app_name">To-Do-App</string>
+    <string name="app_name">Tasks list</string>
+
+    <string name="add_task_title">Add new task</string>
+    <string name="add_task_button">Add</string>
+    <string name="add_task_empty_error">Task name cannot be empty!</string>
+    <string name="add_task_success_message">Task added successfully</string>
+    <string name="add_task_hint">Task</string>
+
+    <string name="edit_task_title">Edit task</string>
+    <string name="edit_task_button">Save</string>
+    <string name="edit_task_success_message">Task edited successfully</string>
+
+    <string name="delete_task_title">Delete task</string>
+    <string name="delete_task_button">Delete</string>
+    <string name="delete_task_confirm_message">Are you sure to delete task: %1$s</string>
+    <string name="delete_task_success_message">Task deleted successfully</string>
 </resources>

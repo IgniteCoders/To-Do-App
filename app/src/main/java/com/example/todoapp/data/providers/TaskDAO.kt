@@ -4,7 +4,7 @@ import android.annotation.SuppressLint
 import android.content.ContentValues
 import android.content.Context
 import android.util.Log
-import com.example.todoapp.data.Task
+import com.example.todoapp.data.entities.Task
 import com.example.todoapp.utils.DatabaseManager
 
 class TaskDAO (context: Context) {
