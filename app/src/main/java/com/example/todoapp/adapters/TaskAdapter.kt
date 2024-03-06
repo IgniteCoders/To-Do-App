@@ -22,8 +22,10 @@ class TaskAdapter(private var items:List<Task> = listOf(),
     override fun onBindViewHolder(holder: TaskViewHolder, position: Int) {
         holder.render(items[position])
         holder.itemView.setOnClickListener { onClickListener(position) }
-        holder.binding.doneCheckBox.setOnCheckedChangeListener { _, isChecked ->
-            onCheckedListener(position)
+        holder.binding.doneCheckBox.setOnCheckedChangeListener { checkbox, isChecked ->
+            if (checkbox.isPressed) {
+                onCheckedListener(position)
+            }
         }
         holder.binding.deleteButton.setOnClickListener {
             onRemoveListener(position)

@@ -74,7 +74,7 @@ class MainActivity : AppCompatActivity() {
         alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
             val taskName = binding.taskTextField.editText?.text.toString()
             if (taskName.isNotEmpty()) {
-                val task: Task = Task(-1, taskName, false)
+                val task = Task(-1, taskName, false)
                 taskDAO.insert(task)
                 loadData()
                 Toast.makeText(this, R.string.add_task_success_message, Toast.LENGTH_SHORT).show()
