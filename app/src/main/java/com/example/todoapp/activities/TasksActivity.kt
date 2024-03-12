@@ -1,34 +1,62 @@
 package com.example.todoapp.activities
 
+import android.content.Intent
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
+import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.todoapp.R
 import com.example.todoapp.adapters.TaskAdapter
+import com.example.todoapp.data.entities.Category
 import com.example.todoapp.data.entities.Task
+import com.example.todoapp.data.providers.CategoryDAO
 import com.example.todoapp.data.providers.TaskDAO
-import com.example.todoapp.databinding.ActivityMainBinding
-import com.example.todoapp.databinding.AddDialogBinding
+import com.example.todoapp.databinding.ActivityTasksBinding
+import com.example.todoapp.databinding.AddTaskDialogBinding
 
 
-class MainActivity : AppCompatActivity() {
+class TasksActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityMainBinding
+    companion object {
+        const val EXTRA_ID = "CATEGORY_ID"
+    }
+
+    private lateinit var categoryDAO: CategoryDAO
+    private lateinit var binding: ActivityTasksBinding
     private lateinit var adapter: TaskAdapter
+
     private lateinit var taskList: MutableList<Task>
     private lateinit var taskDAO: TaskDAO
+
+    private lateinit var category: Category
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        binding = ActivityMainBinding.inflate(layoutInflater)
+        binding = ActivityTasksBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         taskDAO = TaskDAO(this)
+        categoryDAO = CategoryDAO(this)
+        //categoryDAO.insert(Category(-1, "Trabajo", "#FF00FF"))
+        //categoryDAO.insert(Category(-1, "Personal", "#AA0088"))
+        //categoryDAO.insert(Category(-1, "Compra", "#AAFFBB"))
+
+        val categoryId = intent.getIntExtra(EXTRA_ID, -1)
+        category = categoryDAO.find(categoryId)!!
+
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.title = category.name
 
         initView()
+    }
+
+    override fun onResume() {
+        super.onResume()
 
         loadData()
     }
@@ -51,14 +79,28 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun loadData() {
-        taskList = taskDAO.findAll().toMutableList()
+        taskList = taskDAO.findAllByCategory(category).toMutableList()
         adapter.updateItems(taskList)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            android.R.id.home -> {
+                finish()
+                return true
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     private fun addTask() {
         val dialogBuilder: AlertDialog.Builder = AlertDialog.Builder(this)
-        val binding: AddDialogBinding = AddDialogBinding.inflate(layoutInflater)
+        val binding: AddTaskDialogBinding = AddTaskDialogBinding.inflate(layoutInflater)
         dialogBuilder.setView(binding.root)
+
+        /*val spinnerAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, categoryList.map { it.name })
+        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        binding.categorySpinner.adapter = spinnerAdapter*/
 
         dialogBuilder.setTitle(R.string.add_task_title)
         dialogBuilder.setIcon(R.drawable.ic_add_task)
@@ -74,7 +116,7 @@ class MainActivity : AppCompatActivity() {
         alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
             val taskName = binding.taskTextField.editText?.text.toString()
             if (taskName.isNotEmpty()) {
-                val task = Task(-1, taskName, false)
+                val task = Task(-1, taskName, false, category)
                 taskDAO.insert(task)
                 loadData()
                 Toast.makeText(this, R.string.add_task_success_message, Toast.LENGTH_SHORT).show()
@@ -89,8 +131,13 @@ class MainActivity : AppCompatActivity() {
         val task: Task = taskList[position]
 
         val dialogBuilder: AlertDialog.Builder = AlertDialog.Builder(this)
-        val binding: AddDialogBinding = AddDialogBinding.inflate(layoutInflater)
+        val binding: AddTaskDialogBinding = AddTaskDialogBinding.inflate(layoutInflater)
         dialogBuilder.setView(binding.root)
+
+        /*val spinnerAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, categoryList.map { it.name })
+        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        binding.categorySpinner.adapter = spinnerAdapter
+        binding.categorySpinner.setSelection(categoryList.indexOf(task.category))*/
 
         binding.taskTextField.editText?.setText(task.task)
 
@@ -109,6 +156,7 @@ class MainActivity : AppCompatActivity() {
             val taskName = binding.taskTextField.editText?.text.toString()
             if (taskName.isNotEmpty()) {
                 task.task = taskName
+                task.category = category
                 taskDAO.update(task)
                 adapter.notifyItemChanged(position)
                 Toast.makeText(this, R.string.edit_task_success_message, Toast.LENGTH_SHORT).show()
@@ -127,6 +175,7 @@ class MainActivity : AppCompatActivity() {
         val task: Task = taskList[position]
         task.done = !task.done
         taskDAO.update(task)
+        //loadData()
         //adapter.notifyItemChanged(position)
         //adapter.notifyDataSetChanged()
     }

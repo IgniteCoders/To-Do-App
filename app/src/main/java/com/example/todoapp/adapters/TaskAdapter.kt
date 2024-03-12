@@ -2,6 +2,7 @@ package com.example.todoapp.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.graphics.toColorInt
 import androidx.recyclerview.widget.RecyclerView
 import com.example.todoapp.data.entities.Task
 import com.example.todoapp.databinding.ItemTaskBinding

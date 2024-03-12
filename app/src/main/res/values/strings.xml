@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">Tasks list</string>
+    <string name="categories_list">Tasks list</string>
 
     <string name="add_task_title">Add new task</string>
     <string name="add_task_button">Add</string>
@@ -15,4 +16,22 @@
     <string name="delete_task_button">Delete</string>
     <string name="delete_task_confirm_message">Are you sure to delete task: %1$s</string>
     <string name="delete_task_success_message">Task deleted successfully</string>
+
+    <string name="add_category_title">Add new category</string>
+    <string name="add_category_button">Add</string>
+    <string name="add_category_empty_error">Category name cannot be empty!</string>
+    <string name="add_category_success_message">Category added successfully</string>
+    <string name="add_category_hint">Category</string>
+
+    <string name="edit_category_title">Edit category</string>
+    <string name="edit_category_button">Save</string>
+    <string name="edit_category_success_message">Category edited successfully</string>
+
+    <string name="delete_category_title">Delete category</string>
+    <string name="delete_category_button">Delete</string>
+    <string name="delete_category_confirm_message">Are you sure you want to delete category: %1$s</string>
+    <string name="delete_category_success_message">Category deleted successfully</string>
+
+    <string name="empty_category_title">No pending tasks</string>
+    <string name="empty_category_message">Press the + menu button in the top right corner to create a new tasks list</string>
 </resources>

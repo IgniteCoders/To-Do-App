@@ -1,19 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Lista de tareas</string>
+    <string name="categories_list">Lista de tareas</string>
 
     <string name="add_task_title">Añadir tarea</string>
     <string name="add_task_button">Añadir</string>
     <string name="add_task_empty_error">El nombre de la tarea no puede estar vacio!</string>
-    <string name="add_task_success_message">Tarea añadida correctamente</string>
-    <string name="add_task_hint">Tarea</string>
+    <string name="add_task_success_message">Categoría añadida correctamente</string>
+    <string name="add_task_hint">Categoría</string>
 
     <string name="edit_task_title">Editar tarea</string>
     <string name="edit_task_button">Guardar</string>
-    <string name="edit_task_success_message">Tarea editada correctamente</string>
+    <string name="edit_task_success_message">Categoría editada correctamente</string>
 
     <string name="delete_task_title">Borrar tarea</string>
     <string name="delete_task_button">Borrar</string>
     <string name="delete_task_confirm_message">Está seguro de querer borrar la tarea: %1$s</string>
-    <string name="delete_task_success_message">Tarea borrada correctamente</string>
+    <string name="delete_task_success_message">Categoría borrada correctamente</string>
+
+    <string name="add_category_title">Añadir categoría</string>
+    <string name="add_category_button">Añadir</string>
+    <string name="add_category_empty_error">El nombre de la categoría no puede estar vacio!</string>
+    <string name="add_category_success_message">Categoría añadida correctamente</string>
+    <string name="add_category_hint">Categoría</string>
+
+    <string name="edit_category_title">Editar categoría</string>
+    <string name="edit_category_button">Guardar</string>
+    <string name="edit_category_success_message">Categoría editada correctamente</string>
+
+    <string name="delete_category_title">Borrar categoría</string>
+    <string name="delete_category_button">Borrar</string>
+    <string name="delete_category_confirm_message">Está seguro de querer borrar la categoría: %1$s</string>
+    <string name="delete_category_success_message">Categoría borrada correctamente</string>
+
+    <string name="empty_category_title">No tienes tareas pendientes</string>
+    <string name="empty_category_message">Pulsa el botón + del menú arriba a la derecha para crear una nueva lista de tareas</string>
 </resources>
