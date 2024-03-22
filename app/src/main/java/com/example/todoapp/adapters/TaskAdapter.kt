@@ -3,9 +3,11 @@ package com.example.todoapp.adapters
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.graphics.toColorInt
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.todoapp.data.entities.Task
 import com.example.todoapp.databinding.ItemTaskBinding
+import com.example.todoapp.utils.TaskDiffUtils
 
 class TaskAdapter(private var items:List<Task> = listOf(),
                   private val onClickListener: (position:Int) -> Unit,
@@ -22,20 +24,22 @@ class TaskAdapter(private var items:List<Task> = listOf(),
 
     override fun onBindViewHolder(holder: TaskViewHolder, position: Int) {
         holder.render(items[position])
-        holder.itemView.setOnClickListener { onClickListener(position) }
+        holder.itemView.setOnClickListener { onClickListener(holder.adapterPosition) }
         holder.binding.doneCheckBox.setOnCheckedChangeListener { checkbox, isChecked ->
             if (checkbox.isPressed) {
-                onCheckedListener(position)
+                onCheckedListener(holder.adapterPosition)
             }
         }
         holder.binding.deleteButton.setOnClickListener {
-            onRemoveListener(position)
+            onRemoveListener(holder.adapterPosition)
         }
     }
 
     fun updateItems(results: List<Task>) {
+        val diffUtils = TaskDiffUtils(items, results)
+        val diffResult = DiffUtil.calculateDiff(diffUtils)
         items = results
-        notifyDataSetChanged()
+        diffResult.dispatchUpdatesTo(this)
     }
 }
 

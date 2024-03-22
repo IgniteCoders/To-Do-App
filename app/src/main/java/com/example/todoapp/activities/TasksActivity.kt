@@ -1,14 +1,13 @@
 package com.example.todoapp.activities
 
-import android.content.Intent
 import android.os.Bundle
-import android.view.Menu
 import android.view.MenuItem
-import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.todoapp.R
 import com.example.todoapp.adapters.TaskAdapter
 import com.example.todoapp.data.entities.Category
@@ -76,11 +75,36 @@ class TasksActivity : AppCompatActivity() {
 
         binding.recyclerView.adapter = adapter
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
+
+        configureGestures()
     }
 
     private fun loadData() {
         taskList = taskDAO.findAllByCategory(category).toMutableList()
         adapter.updateItems(taskList)
+    }
+
+    private fun configureGestures() {
+        val gestures = ItemTouchHelper(
+            object : ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP or ItemTouchHelper.DOWN, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
+                override fun onMove(
+                    recyclerView: RecyclerView,
+                    viewHolder: RecyclerView.ViewHolder,
+                    target: RecyclerView.ViewHolder
+                ): Boolean {
+                    adapter.notifyItemMoved(viewHolder.adapterPosition, target.adapterPosition)
+                    return true
+                }
+
+                override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                    if (direction == ItemTouchHelper.LEFT) {
+                        onItemClickRemoveListener(viewHolder.adapterPosition)
+                    } else {
+                        onItemClickCheckBoxListener(viewHolder.adapterPosition)
+                    }
+                }
+        })
+        gestures.attachToRecyclerView(binding.recyclerView)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -175,8 +199,8 @@ class TasksActivity : AppCompatActivity() {
         val task: Task = taskList[position]
         task.done = !task.done
         taskDAO.update(task)
-        //loadData()
-        //adapter.notifyItemChanged(position)
+        adapter.notifyItemChanged(position)
+        loadData()
         //adapter.notifyDataSetChanged()
     }
 
@@ -188,16 +212,21 @@ class TasksActivity : AppCompatActivity() {
         dialogBuilder.setMessage(getString(R.string.delete_task_confirm_message, task.task))
         dialogBuilder.setIcon(R.drawable.ic_delete)
         dialogBuilder.setNegativeButton(android.R.string.cancel) { dialog, _ ->
+            adapter.notifyItemChanged(position)
             dialog.dismiss()
         }
         dialogBuilder.setPositiveButton(R.string.delete_task_button) { dialog, _ ->
             taskDAO.delete(task)
-            taskList.removeAt(position)
-            //adapter.notifyItemRemoved(position)
-            adapter.notifyDataSetChanged()
+
+            val newList = taskList.minus(task)
+            adapter.updateItems(newList)
+
+            taskList = newList.toMutableList()
             dialog.dismiss()
             Toast.makeText(this, R.string.delete_task_success_message, Toast.LENGTH_SHORT).show()
         }
         dialogBuilder.show()
     }
+
+
 }
